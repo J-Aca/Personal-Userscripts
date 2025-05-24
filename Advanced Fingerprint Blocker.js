@@ -6,14 +6,14 @@
 // @author       J-Aca
 // @match        *://*/*
 // @match        *://*.*/*
-// @icon         https://github.com/J-Aca/Personal-Userscripts/blob/main/icon/ico.png
+// @icon         https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/icon/ico.png
 // @grant        none
 // @run-at       document-start
 // @grant        GM_xmlhttpRequest
 // @grant        GM_setValue
 // @grant        GM_getValue
-// @updateURL    https://github.com/J-Aca/Personal-Userscripts/blob/main/Advanced%20Fingerprint%20Blocker.js
-// @downloadURL  https://github.com/J-Aca/Personal-Userscripts/blob/main/Advanced%20Fingerprint%20Blocker.js
+// @updateURL    https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/Advanced%20Fingerprint%20Blocker.js
+// @downloadURL  https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/Advanced%20Fingerprint%20Blocker.js
 // ==/UserScript==
 
 
