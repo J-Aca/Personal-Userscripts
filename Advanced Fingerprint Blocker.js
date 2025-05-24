@@ -6,14 +6,14 @@
 // @author       J-Aca
 // @match        *://*/*
 // @match        *://*.*/*
-// @icon         
+// @icon         https://github.com/J-Aca/Personal-Userscripts/blob/main/icon/ico.png
 // @grant        none
 // @run-at       document-start
 // @grant        GM_xmlhttpRequest
 // @grant        GM_setValue
 // @grant        GM_getValue
-// @updateURL    
-// @downloadURL  
+// @updateURL    https://github.com/J-Aca/Personal-Userscripts/blob/main/Advanced%20Fingerprint%20Blocker.js
+// @downloadURL  https://github.com/J-Aca/Personal-Userscripts/blob/main/Advanced%20Fingerprint%20Blocker.js
 // ==/UserScript==
 
 
@@ -43,7 +43,7 @@
         return result;
     }
 
-    // --- Canvas Fingerprinting (modificación de toDataURL) ---
+    // --- Canvas Fingerprinting (modificaciÃ³n de toDataURL) ---
     const originalToDataURL = HTMLCanvasElement.prototype.toDataURL;
     HTMLCanvasElement.prototype.toDataURL = function() {
         const context = this.getContext('2d');
@@ -66,11 +66,11 @@
             context.restore();
         }
         const result = originalToDataURL.apply(this, arguments);
-        console.log('🖼︄1�7 Canvas.toDataURL modificado con ruido.');
+        console.log('ðŸ–¼ï¸„1¤7 Canvas.toDataURL modificado con ruido.');
         return result;
     };
 
-    // --- WebGL Fingerprinting (modificación de getParameter) ---
+    // --- WebGL Fingerprinting (modificaciÃ³n de getParameter) ---
     const originalGetParameterWebGL = WebGLRenderingContext.prototype.getParameter;
     WebGLRenderingContext.prototype.getParameter = function(pname) {
         const GL_VENDOR = 0x1F00;
@@ -104,32 +104,32 @@
         switch (pname) {
             case GL_VENDOR:
                 const vendor = getRandomElement(webglVendors);
-                console.log(`✄1�7 WebGL Vendor modificado a: ${vendor}`);
+                console.log(`âœ„1¤7 WebGL Vendor modificado a: ${vendor}`);
                 return vendor;
             case GL_RENDERER:
                 const renderer = getRandomElement(webglRenderers);
-                console.log(`✄1�7 WebGL Renderer modificado a: ${renderer}`);
+                console.log(`âœ„1¤7 WebGL Renderer modificado a: ${renderer}`);
                 return renderer;
             case GL_VERSION:
                 const version = getRandomElement(webglVersions);
-                console.log(`✄1�7 WebGL Version modificado a: ${version}`);
+                console.log(`âœ„1¤7 WebGL Version modificado a: ${version}`);
                 return version;
             case GL_SHADING_LANGUAGE_VERSION:
                 const shLang = getRandomElement(webglShadingLanguages);
-                console.log(`✄1�7 WebGL Shading Language Version modificado a: ${shLang}`);
+                console.log(`âœ„1¤7 WebGL Shading Language Version modificado a: ${shLang}`);
                 return shLang;
             default:
                 return originalGetParameterWebGL.call(this, pname);
         }
     };
 
-    // --- Suplantación de Navigator (User Agent, Plataforma, etc.) ---
+    // --- SuplantaciÃ³n de Navigator (User Agent, Plataforma, etc.) ---
     const fakeUserAgents = [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0.0 Safari/605.1.15",
         "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "Mozilla/5.0 (Windows NT 10.0; rv:110.0) Gecko/20100101 Firefox/122.0",
-        "Mozilla/5.0 (Android 12; Mobile; rv:110.0) Gecko/110.0 Firefox/122.0", // Móvil
+        "Mozilla/5.0 (Android 12; Mobile; rv:110.0) Gecko/110.0 Firefox/122.0", // MÃ³vil
         "Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/90.0.4430.210 Mobile/15E148 Safari/604.1", // iPad
         "Mozilla/5.0 (Linux; Android 12; SM-G998U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Mobile Safari/537.36", // Android
         "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1" // iPhone
@@ -146,7 +146,7 @@
     const fixedRandomDeviceMemory = getRandomNumber(2, 32);
 
     function applyAggressiveNavigatorSpoofing() {
-        console.log('🚀 Iniciando modificación agresiva del navegador...');
+        console.log('ðŸš€ Iniciando modificaciÃ³n agresiva del navegador...');
         try {
             Object.defineProperty(navigator, 'userAgent', { get: () => fixedRandomUserAgent, configurable: true, enumerable: true });
             Object.defineProperty(navigator, 'appVersion', { get: () => fixedRandomUserAgent.substring(fixedRandomUserAgent.indexOf('/') + 1), configurable: true, enumerable: true });
@@ -156,7 +156,7 @@
             Object.defineProperty(navigator, 'hardwareConcurrency', { get: () => fixedRandomHardwareConcurrency, configurable: true, enumerable: true });
             Object.defineProperty(navigator, 'deviceMemory', { get: () => fixedRandomDeviceMemory, configurable: true, enumerable: true });
 
-            console.log('✄1�7 Modificaciones del navegador aplicadas:');
+            console.log('âœ„1¤7 Modificaciones del navegador aplicadas:');
             console.log('  User Agent:', navigator.userAgent);
             console.log('  App Version:', navigator.appVersion);
             console.log('  Plataforma:', navigator.platform);
@@ -165,14 +165,14 @@
             console.log('  Hardware Concurrency:', navigator.hardwareConcurrency);
             console.log('  Device Memory:', navigator.deviceMemory);
         } catch (error) {
-            console.error('❄1�7 Error grave al intentar modificar las propiedades del navegador:', error);
-            console.warn('⚠️ No todas las propiedades pueden ser modificadas en todos los entornos o versiones de navegador. ¡El sitio podría detectar la manipulación!');
+            console.error('â„1¤7 Error grave al intentar modificar las propiedades del navegador:', error);
+            console.warn('âš ï¸ No todas las propiedades pueden ser modificadas en todos los entornos o versiones de navegador. Â¡El sitio podrÃ­a detectar la manipulaciÃ³n!');
         }
     }
     applyAggressiveNavigatorSpoofing();
 
     setTimeout(() => {
-        console.log('\n--- Verificación de persistencia después de un breve retraso ---');
+        console.log('\n--- VerificaciÃ³n de persistencia despuÃ©s de un breve retraso ---');
         console.log('  User Agent (actual):', navigator.userAgent);
         console.log('  Plataforma (actual):', navigator.platform);
         console.log('  Vendor (actual):', navigator.vendor);
@@ -180,7 +180,7 @@
         console.log('  Device Memory (actual):', navigator.deviceMemory);
     }, 1500);
 
-    // --- Suplantación de Propiedades de Pantalla ---
+    // --- SuplantaciÃ³n de Propiedades de Pantalla ---
     const screenResolutions = [
         { width: 1920, height: 1080 },
         { width: 1366, height: 768 },
@@ -199,7 +199,7 @@
     Object.defineProperty(window, 'innerHeight', { get: () => screen.availHeight - getRandomNumber(0, 150) });
     Object.defineProperty(window, 'devicePixelRatio', { get: () => getRandomElement([1, 1.25, 1.5, 2, 2.5, 3]) });
 
-    console.log('📏 Dimensiones de pantalla y DPI modificados:', {
+    console.log('ðŸ“ Dimensiones de pantalla y DPI modificados:', {
         width: screen.width,
         height: screen.height,
         availWidth: screen.availWidth,
@@ -209,7 +209,7 @@
         devicePixelRatio: window.devicePixelRatio
     });
 
-    // --- Suplantación de Zona Horaria ---
+    // --- SuplantaciÃ³n de Zona Horaria ---
     const _timezoneShield = {};
     const _getRandomTimezone = () => {
         const availableTimezones = [
@@ -286,7 +286,7 @@
                 try {
                     return _timezoneShield._originalToLocaleString.call(adjustedDate, locale, finalOptions);
                 } catch (error) {
-                    console.warn("Simulación de Zona Horaria: toLocaleString falló, usando respaldo.", error);
+                    console.warn("SimulaciÃ³n de Zona Horaria: toLocaleString fallÃ³, usando respaldo.", error);
                     return _timezoneShield._originalToLocaleString.call(adjustedDate, locale, options);
                 }
             });
@@ -328,13 +328,13 @@
                     };
                     return new Proxy(OriginalConstructor, proxyHandler)(locale, finalOptions);
                 } catch (error) {
-                    console.warn("Simulación de Zona Horaria: Intl.DateTimeFormat falló, usando respaldo.", error);
+                    console.warn("SimulaciÃ³n de Zona Horaria: Intl.DateTimeFormat fallÃ³, usando respaldo.", error);
                     return new _timezoneShield._originalIntlDateTimeFormat(locale);
                 }
             });
 
             setTimeout(() => {
-                console.log("\n⏄1�7 Simulación de Zona Horaria ACTIVADA ⏄1�7");
+                console.log("\nâ„1¤7 SimulaciÃ³n de Zona Horaria ACTIVADA â„1¤7");
                 console.log("  Desfase Simulado (minutos):", new Date().getTimezoneOffset());
                 console.log("  TZ Simulada (en toString):", new Date().toString().match(/\(([^)]+)\)$/)?.[1] || "No detectado");
                 console.log("  Ejemplo toLocaleString:", new Date().toLocaleString());
@@ -342,7 +342,7 @@
                 console.log("-------------------------------------------\n");
             }, 500);
         } catch (error) {
-            console.error("❄1�7 ¡Error CRÍTICO al intentar simular la zona horaria!:", error);
+            console.error("â„1¤7 Â¡Error CRÃTICO al intentar simular la zona horaria!:", error);
         }
     })();
 
@@ -353,17 +353,17 @@
         if (_timezoneShield._originalToLocaleDateString) Date.prototype.toLocaleDateString = _timezoneShield._originalToLocaleDateString;
         if (_timezoneShield._originalToLocaleTimeString) Date.prototype.toLocaleTimeString = _timezoneShield._originalToLocaleTimeString;
         if (_timezoneShield._originalIntlDateTimeFormat) Intl.DateTimeFormat = _timezoneShield._originalIntlDateTimeFormat;
-        console.log("🔄 ¡Simulación de Zona Horaria REVERTIDA! Volviendo a la original del navegador.");
+        console.log("ðŸ”„ Â¡SimulaciÃ³n de Zona Horaria REVERTIDA! Volviendo a la original del navegador.");
     };
 
-    // --- Obfuscación de Lenguaje ---'en-US', 'es-ES', 'fr-FR', 'de-DE', 'ja-JP', 'zh-CN', 'pt-BR', 'it-IT', 'ko-KR', 'ru-RU'
+    // --- ObfuscaciÃ³n de Lenguaje ---'en-US', 'es-ES', 'fr-FR', 'de-DE', 'ja-JP', 'zh-CN', 'pt-BR', 'it-IT', 'ko-KR', 'ru-RU'
     const fakeLanguages = ['es-ES', 'es-MX', 'es-US', 'es-AR', 'es-CO', 'es-CL', 'es-PE', 'es-VE', 'es-PR', 'es-DO', 'es-CR', 'es-GT', 'es-SV', 'es-HN', 'es-NI', 'es-PA', 'es-CU', 'es-BO', 'es-EC', 'es-UY', 'es-PY', 'es-GQ'];
     const selectedLanguage = getRandomElement(fakeLanguages);
     Object.defineProperty(navigator, 'language', { get: () => selectedLanguage });
     Object.defineProperty(navigator, 'languages', { get: () => [selectedLanguage, getRandomElement(fakeLanguages.filter(l => l !== selectedLanguage))] });
-    console.log('🗣︄1�7 Lenguaje modificado:', navigator.language);
+    console.log('ðŸ—£ï¸„1¤7 Lenguaje modificado:', navigator.language);
 
-    // --- Obfuscación de Plugins y MimeTypes ---
+    // --- ObfuscaciÃ³n de Plugins y MimeTypes ---
     Object.defineProperty(navigator, 'plugins', {
         get: () => {
             const commonPlugins = [
@@ -376,7 +376,7 @@
             const numPlugins = getRandomNumber(0, commonPlugins.length);
             const shuffledPlugins = commonPlugins.sort(() => 0.5 - Math.random());
             const selectedPlugins = shuffledPlugins.slice(0, numPlugins);
-            console.log('🧩 navigator.plugins modificado.');
+            console.log('ðŸ§© navigator.plugins modificado.');
             return selectedPlugins;
         }
     });
@@ -396,21 +396,21 @@
             const numMimeTypes = getRandomNumber(0, commonMimeTypes.length);
             const shuffledMimeTypes = commonMimeTypes.sort(() => 0.5 - Math.random());
             const selectedMimeTypes = shuffledMimeTypes.slice(0, numMimeTypes);
-            console.log('🔗 navigator.mimeTypes modificado.');
+            console.log('ðŸ”— navigator.mimeTypes modificado.');
             return selectedMimeTypes;
         }
     });
 
     // --- Otras propiedades de Navigator ---
     Object.defineProperty(navigator, 'webdriver', { get: () => false });
-    console.log('🤖 navigator.webdriver modificado a false.');
+    console.log('ðŸ¤– navigator.webdriver modificado a false.');
 
     Object.defineProperty(navigator, 'doNotTrack', { get: () => getRandomElement(['1', '0', null]) });
-    console.log('🕵️�1�7�♀︄1�7 navigator.doNotTrack modificado.');
+    console.log('ðŸ•µï¸â„1¤7â™€ï¸„1¤7 navigator.doNotTrack modificado.');
 
  
 
-    // --- Suplantación de Network Information API (navigator.connection) ---
+    // --- SuplantaciÃ³n de Network Information API (navigator.connection) ---
     if (navigator.connection) {
         Object.defineProperty(navigator, 'connection', {
             get: () => ({
@@ -420,15 +420,15 @@
                 saveData: getRandomElement([true, false])
             })
         });
-        console.log('📡 navigator.connection modificado.');
+        console.log('ðŸ“¡ navigator.connection modificado.');
     }
 
-    // --- Suplantación de maxTouchPoints y cookieEnabled ---
+    // --- SuplantaciÃ³n de maxTouchPoints y cookieEnabled ---
     Object.defineProperty(navigator, 'maxTouchPoints', { get: () => getRandomElement([0, 1, 5, 10]) });
-    console.log('👆 maxTouchPoints modificado.');
+    console.log('ðŸ‘† maxTouchPoints modificado.');
 
     Object.defineProperty(navigator, 'cookieEnabled', { get: () => getRandomElement([true, true, true, false]) });
-    console.log('🍪 cookieEnabled modificado.');
+    console.log('ðŸª cookieEnabled modificado.');
 
    
          // WebGL Vendor & Renderer (ejemplos comunes)
@@ -460,7 +460,7 @@
     }
    
    
-   /// --- Detección de AdBlock (condicional por URL) ---
+   /// --- DetecciÃ³n de AdBlock (condicional por URL) ---
     const allowedUrlsForAdBlock = [
         'https://www.youtube-nocookie.com/',
         'https://www.twitch.tv/',
@@ -469,27 +469,27 @@
     ];
 
     // --- Palabras clave a excluir ---
-    // Si un className o ID contiene estas palabras, el script lo ignorará,
-    // incluso si también contiene "ad" o "adsbox".
+    // Si un className o ID contiene estas palabras, el script lo ignorarÃ¡,
+    // incluso si tambiÃ©n contiene "ad" o "adsbox".
     const excludedKeywords = [
         'loading',      // Usado para spinners, barras de carga, etc.
         'loader',       // Otra variante para elementos de carga
-        'header',       // Común en IDs/clases no relacionados con anuncios
-        'footer',       // Ídem
-        'sidebar',      // Ídem
-        'navbar',       // Ídem
+        'header',       // ComÃºn en IDs/clases no relacionados con anuncios
+        'footer',       // Ãdem
+        'sidebar',      // Ãdem
+        'navbar',       // Ãdem
         'main',         // Contenido principal
-        'content',      // Contenido de la página
+        'content',      // Contenido de la pÃ¡gina
         'overlay',      // Superposiciones (popups, pero no necesariamente anuncios)
         'modal',        // Ventanas modales
-        'dropdown',     // Menús desplegables
+        'dropdown',     // MenÃºs desplegables
         'widget',       // Widgets generales, no necesariamente anuncios
-        'slideshow',    // Galerías de imágenes
+        'slideshow',    // GalerÃ­as de imÃ¡genes
         'carousel',     // Carruseles
-        'pagination',   // Paginación
-        'ads-filter',   // Una clase que podría ser para un filtro de anuncios, no el anuncio en sí
+        'pagination',   // PaginaciÃ³n
+        'ads-filter',   // Una clase que podrÃ­a ser para un filtro de anuncios, no el anuncio en sÃ­
         'ads-container-placeholder', // Si el sitio usa placeholders, no queremos modificarlos
-        // Agrega más palabras clave si encuentras elementos que se están afectando incorrectamente.
+        // Agrega mÃ¡s palabras clave si encuentras elementos que se estÃ¡n afectando incorrectamente.
     ];
 
     // --- Funciones auxiliares ---
@@ -501,7 +501,7 @@
         return arr[Math.floor(Math.random() * arr.length)];
     }
 
-    // --- Función para verificar si un elemento debe ser excluido ---
+    // --- FunciÃ³n para verificar si un elemento debe ser excluido ---
     function shouldExcludeElement(element) {
         const className = element.className;
         const id = element.id;
@@ -511,35 +511,35 @@
             return false;
         }
 
-        // Comprobar si className o ID contienen alguna de las palabras clave de exclusión.
+        // Comprobar si className o ID contienen alguna de las palabras clave de exclusiÃ³n.
         for (const keyword of excludedKeywords) {
             if (typeof className === 'string' && className.includes(keyword)) {
-                console.log(`❄1�7 Anti-AdBlock Bypass: Excluyendo por className "${keyword}":`, element);
+                console.log(`â„1¤7 Anti-AdBlock Bypass: Excluyendo por className "${keyword}":`, element);
                 return true;
             }
             if (typeof id === 'string' && id.includes(keyword)) {
-                console.log(`❄1�7 Anti-AdBlock Bypass: Excluyendo por ID "${keyword}":`, element);
+                console.log(`â„1¤7 Anti-AdBlock Bypass: Excluyendo por ID "${keyword}":`, element);
                 return true;
             }
         }
         return false;
     }
 
-    // --- Lógica principal ---
+    // --- LÃ³gica principal ---
     const isAllowedUrl = allowedUrlsForAdBlock.some(url => location.href.startsWith(url));
 
     if (isAllowedUrl) {
-        console.log('🚫 Anti-AdBlock Bypass: Detección de AdBlock permitida para esta URL. No se aplicará ofuscación.');
+        console.log('ðŸš« Anti-AdBlock Bypass: DetecciÃ³n de AdBlock permitida para esta URL. No se aplicarÃ¡ ofuscaciÃ³n.');
         return;
     }
 
-    console.log('✄1�7 Anti-AdBlock Bypass: Iniciando ofuscación para esta URL.');
+    console.log('âœ„1¤7 Anti-AdBlock Bypass: Iniciando ofuscaciÃ³n para esta URL.');
 
     // 1. Sobrescribir Element.prototype.appendChild
     const originalAppendChild = Element.prototype.appendChild;
     Element.prototype.appendChild = function(node) {
         if (node && node.nodeType === Node.ELEMENT_NODE) {
-            // Primero, verifica si debe ser excluido antes de aplicar cualquier lógica de anuncio
+            // Primero, verifica si debe ser excluido antes de aplicar cualquier lÃ³gica de anuncio
             if (shouldExcludeElement(node)) {
                 return originalAppendChild.call(this, node); // Agrega el nodo sin modificaciones
             }
@@ -557,7 +557,7 @@
                 if (!Object.getOwnPropertyDescriptor(node, 'offsetWidth')) {
                     Object.defineProperty(node, 'offsetWidth', { get: () => getRandomNumber(1, 100), configurable: true });
                 }
-                console.log('📏 Anti-AdBlock Bypass: Modificando dimensiones de un elemento publicitario potencial.', node);
+                console.log('ðŸ“ Anti-AdBlock Bypass: Modificando dimensiones de un elemento publicitario potencial.', node);
             }
         }
         return originalAppendChild.call(this, node);
@@ -591,15 +591,15 @@
                     if (!Object.getOwnPropertyDescriptor(style, 'opacity')) {
                         Object.defineProperty(style, 'opacity', { value: '1', configurable: true });
                     }
-                    console.log('👻 Anti-AdBlock Bypass: Intentando falsear la visibilidad de un elemento publicitario.', elt);
+                    console.log('ðŸ‘» Anti-AdBlock Bypass: Intentando falsear la visibilidad de un elemento publicitario.', elt);
                 }
             }
         }
         return style;
     };
 
-  // --- Detección de AdBlock    
+  // --- DetecciÃ³n de AdBlock    
 
      
-    console.log('🚀 Script de ofuscación de huella digital del navegador activo.');
+    console.log('ðŸš€ Script de ofuscaciÃ³n de huella digital del navegador activo.');
 })();
