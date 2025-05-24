@@ -1,24 +1,24 @@
 // ==UserScript==
-// @name         Advanced Fingerprint Blocker
-// @namespace    J-Aca :)
-// @version      2.3
-// @description  Generates random browser fingerprint 
-// @author       J-Aca
-// @match        *://*/*
-// @match        *://*.*/*
-// @icon         https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/icon/ico.png
-// @grant        none
-// @run-at       document-start
-// @grant        GM_xmlhttpRequest
-// @grant        GM_setValue
-// @grant        GM_getValue
-// @updateURL    https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/Advanced%20Fingerprint%20Blocker.js
-// @downloadURL  https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/Advanced%20Fingerprint%20Blocker.js
+// @name Advanced Fingerprint Blocker
+// @namespace J-Aca :)
+// @version 2.4
+// @description Generates random browser fingerprint
+// @author J-Aca
+// @match *://*/*
+// @match *://*.*/*
+// @icon https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/icon/ico.png
+// @grant none
+// @run-at document-start
+// @grant GM_xmlhttpRequest
+// @grant GM_setValue
+// @grant GM_getValue
+// @updateURL https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/Advanced%20Fingerprint%20Blocker.js
+// @downloadURL https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/Advanced%20Fingerprint%20Blocker.js
 // ==/UserScript==
 
-
- (function() {
+(function() {
     'use strict';
+console.log("%c ¡Ofuscacion de huella digital activo.!", "background: #000000; color: #00FF00; padding: 15px 20px; font-size: 24px; font-weight: bold; text-align: center; border: 2px solid #00FF00;");
 
     // Funciones auxiliares para obtener valores aleatorios
     function getRandomElement(array) {
@@ -43,7 +43,7 @@
         return result;
     }
 
-    // --- Canvas Fingerprinting (modificaciÃ³n de toDataURL) ---
+    // --- Canvas Fingerprinting (modificacion de toDataURL) ---
     const originalToDataURL = HTMLCanvasElement.prototype.toDataURL;
     HTMLCanvasElement.prototype.toDataURL = function() {
         const context = this.getContext('2d');
@@ -66,11 +66,11 @@
             context.restore();
         }
         const result = originalToDataURL.apply(this, arguments);
-        console.log('ðŸ–¼ï¸„1¤7 Canvas.toDataURL modificado con ruido.');
+        console.log('Canvas.toDataURL modificado con ruido.');
         return result;
     };
 
-    // --- WebGL Fingerprinting (modificaciÃ³n de getParameter) ---
+    // --- WebGL Fingerprinting (modificacion de getParameter) ---
     const originalGetParameterWebGL = WebGLRenderingContext.prototype.getParameter;
     WebGLRenderingContext.prototype.getParameter = function(pname) {
         const GL_VENDOR = 0x1F00;
@@ -104,32 +104,32 @@
         switch (pname) {
             case GL_VENDOR:
                 const vendor = getRandomElement(webglVendors);
-                console.log(`âœ„1¤7 WebGL Vendor modificado a: ${vendor}`);
+                console.log(`WebGL Vendor modificado a: ${vendor}`);
                 return vendor;
             case GL_RENDERER:
                 const renderer = getRandomElement(webglRenderers);
-                console.log(`âœ„1¤7 WebGL Renderer modificado a: ${renderer}`);
+                console.log(`WebGL Renderer modificado a: ${renderer}`);
                 return renderer;
             case GL_VERSION:
                 const version = getRandomElement(webglVersions);
-                console.log(`âœ„1¤7 WebGL Version modificado a: ${version}`);
+                console.log(`WebGL Version modificado a: ${version}`);
                 return version;
             case GL_SHADING_LANGUAGE_VERSION:
                 const shLang = getRandomElement(webglShadingLanguages);
-                console.log(`âœ„1¤7 WebGL Shading Language Version modificado a: ${shLang}`);
+                console.log(`WebGL Shading Language Version modificado a: ${shLang}`);
                 return shLang;
             default:
                 return originalGetParameterWebGL.call(this, pname);
         }
     };
 
-    // --- SuplantaciÃ³n de Navigator (User Agent, Plataforma, etc.) ---
+    // --- Suplantacion de Navigator (User Agent, Plataforma, etc.) ---
     const fakeUserAgents = [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0.0 Safari/605.1.15",
         "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "Mozilla/5.0 (Windows NT 10.0; rv:110.0) Gecko/20100101 Firefox/122.0",
-        "Mozilla/5.0 (Android 12; Mobile; rv:110.0) Gecko/110.0 Firefox/122.0", // MÃ³vil
+        "Mozilla/5.0 (Android 12; Mobile; rv:110.0) Gecko/110.0 Firefox/122.0", // Movil
         "Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/90.0.4430.210 Mobile/15E148 Safari/604.1", // iPad
         "Mozilla/5.0 (Linux; Android 12; SM-G998U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Mobile Safari/537.36", // Android
         "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1" // iPhone
@@ -146,7 +146,7 @@
     const fixedRandomDeviceMemory = getRandomNumber(2, 32);
 
     function applyAggressiveNavigatorSpoofing() {
-        console.log('ðŸš€ Iniciando modificaciÃ³n agresiva del navegador...');
+        console.log('Iniciando modificacion agresiva del navegador...');
         try {
             Object.defineProperty(navigator, 'userAgent', { get: () => fixedRandomUserAgent, configurable: true, enumerable: true });
             Object.defineProperty(navigator, 'appVersion', { get: () => fixedRandomUserAgent.substring(fixedRandomUserAgent.indexOf('/') + 1), configurable: true, enumerable: true });
@@ -156,7 +156,7 @@
             Object.defineProperty(navigator, 'hardwareConcurrency', { get: () => fixedRandomHardwareConcurrency, configurable: true, enumerable: true });
             Object.defineProperty(navigator, 'deviceMemory', { get: () => fixedRandomDeviceMemory, configurable: true, enumerable: true });
 
-            console.log('âœ„1¤7 Modificaciones del navegador aplicadas:');
+            console.log('Modificaciones del navegador aplicadas:');
             console.log('  User Agent:', navigator.userAgent);
             console.log('  App Version:', navigator.appVersion);
             console.log('  Plataforma:', navigator.platform);
@@ -165,14 +165,14 @@
             console.log('  Hardware Concurrency:', navigator.hardwareConcurrency);
             console.log('  Device Memory:', navigator.deviceMemory);
         } catch (error) {
-            console.error('â„1¤7 Error grave al intentar modificar las propiedades del navegador:', error);
-            console.warn('âš ï¸ No todas las propiedades pueden ser modificadas en todos los entornos o versiones de navegador. Â¡El sitio podrÃ­a detectar la manipulaciÃ³n!');
+            console.error('Error grave al intentar modificar las propiedades del navegador:', error);
+            console.warn('No todas las propiedades pueden ser modificadas en todos los entornos o versiones de navegador. ¡El sitio podria detectar la manipulacion!');
         }
     }
     applyAggressiveNavigatorSpoofing();
 
     setTimeout(() => {
-        console.log('\n--- VerificaciÃ³n de persistencia despuÃ©s de un breve retraso ---');
+        console.log('\n--- Verificacion de persistencia despues de un breve retraso ---');
         console.log('  User Agent (actual):', navigator.userAgent);
         console.log('  Plataforma (actual):', navigator.platform);
         console.log('  Vendor (actual):', navigator.vendor);
@@ -180,7 +180,7 @@
         console.log('  Device Memory (actual):', navigator.deviceMemory);
     }, 1500);
 
-    // --- SuplantaciÃ³n de Propiedades de Pantalla ---
+    // --- Suplantacion de Propiedades de Pantalla ---
     const screenResolutions = [
         { width: 1920, height: 1080 },
         { width: 1366, height: 768 },
@@ -199,7 +199,7 @@
     Object.defineProperty(window, 'innerHeight', { get: () => screen.availHeight - getRandomNumber(0, 150) });
     Object.defineProperty(window, 'devicePixelRatio', { get: () => getRandomElement([1, 1.25, 1.5, 2, 2.5, 3]) });
 
-    console.log('ðŸ“ Dimensiones de pantalla y DPI modificados:', {
+    console.log('Dimensiones de pantalla y DPI modificados:', {
         width: screen.width,
         height: screen.height,
         availWidth: screen.availWidth,
@@ -209,7 +209,7 @@
         devicePixelRatio: window.devicePixelRatio
     });
 
-    // --- SuplantaciÃ³n de Zona Horaria ---
+    // --- Suplantacion de Zona Horaria ---
     const _timezoneShield = {};
     const _getRandomTimezone = () => {
         const availableTimezones = [
@@ -286,7 +286,7 @@
                 try {
                     return _timezoneShield._originalToLocaleString.call(adjustedDate, locale, finalOptions);
                 } catch (error) {
-                    console.warn("SimulaciÃ³n de Zona Horaria: toLocaleString fallÃ³, usando respaldo.", error);
+                    console.warn("Simulacion de Zona Horaria: toLocaleString fallo, usando respaldo.", error);
                     return _timezoneShield._originalToLocaleString.call(adjustedDate, locale, options);
                 }
             });
@@ -328,13 +328,13 @@
                     };
                     return new Proxy(OriginalConstructor, proxyHandler)(locale, finalOptions);
                 } catch (error) {
-                    console.warn("SimulaciÃ³n de Zona Horaria: Intl.DateTimeFormat fallÃ³, usando respaldo.", error);
+                    console.warn("Simulacion de Zona Horaria: Intl.DateTimeFormat fallo, usando respaldo.", error);
                     return new _timezoneShield._originalIntlDateTimeFormat(locale);
                 }
             });
 
             setTimeout(() => {
-                console.log("\nâ„1¤7 SimulaciÃ³n de Zona Horaria ACTIVADA â„1¤7");
+                console.log("\nSimulacion de Zona Horaria ACTIVADA");
                 console.log("  Desfase Simulado (minutos):", new Date().getTimezoneOffset());
                 console.log("  TZ Simulada (en toString):", new Date().toString().match(/\(([^)]+)\)$/)?.[1] || "No detectado");
                 console.log("  Ejemplo toLocaleString:", new Date().toLocaleString());
@@ -342,7 +342,7 @@
                 console.log("-------------------------------------------\n");
             }, 500);
         } catch (error) {
-            console.error("â„1¤7 Â¡Error CRÃTICO al intentar simular la zona horaria!:", error);
+            console.error("Error CRITICO al intentar simular la zona horaria!:", error);
         }
     })();
 
@@ -353,17 +353,17 @@
         if (_timezoneShield._originalToLocaleDateString) Date.prototype.toLocaleDateString = _timezoneShield._originalToLocaleDateString;
         if (_timezoneShield._originalToLocaleTimeString) Date.prototype.toLocaleTimeString = _timezoneShield._originalToLocaleTimeString;
         if (_timezoneShield._originalIntlDateTimeFormat) Intl.DateTimeFormat = _timezoneShield._originalIntlDateTimeFormat;
-        console.log("ðŸ”„ Â¡SimulaciÃ³n de Zona Horaria REVERTIDA! Volviendo a la original del navegador.");
+        console.log("¡Simulacion de Zona Horaria REVERTIDA! Volviendo a la original del navegador.");
     };
 
-    // --- ObfuscaciÃ³n de Lenguaje ---'en-US', 'es-ES', 'fr-FR', 'de-DE', 'ja-JP', 'zh-CN', 'pt-BR', 'it-IT', 'ko-KR', 'ru-RU'
+    // --- Obfuscacion de Lenguaje ---
     const fakeLanguages = ['es-ES', 'es-MX', 'es-US', 'es-AR', 'es-CO', 'es-CL', 'es-PE', 'es-VE', 'es-PR', 'es-DO', 'es-CR', 'es-GT', 'es-SV', 'es-HN', 'es-NI', 'es-PA', 'es-CU', 'es-BO', 'es-EC', 'es-UY', 'es-PY', 'es-GQ'];
     const selectedLanguage = getRandomElement(fakeLanguages);
     Object.defineProperty(navigator, 'language', { get: () => selectedLanguage });
     Object.defineProperty(navigator, 'languages', { get: () => [selectedLanguage, getRandomElement(fakeLanguages.filter(l => l !== selectedLanguage))] });
-    console.log('ðŸ—£ï¸„1¤7 Lenguaje modificado:', navigator.language);
+    console.log('Lenguaje modificado:', navigator.language);
 
-    // --- ObfuscaciÃ³n de Plugins y MimeTypes ---
+    // --- Obfuscacion de Plugins y MimeTypes ---
     Object.defineProperty(navigator, 'plugins', {
         get: () => {
             const commonPlugins = [
@@ -376,7 +376,7 @@
             const numPlugins = getRandomNumber(0, commonPlugins.length);
             const shuffledPlugins = commonPlugins.sort(() => 0.5 - Math.random());
             const selectedPlugins = shuffledPlugins.slice(0, numPlugins);
-            console.log('ðŸ§© navigator.plugins modificado.');
+            console.log('navigator.plugins modificado.');
             return selectedPlugins;
         }
     });
@@ -396,21 +396,19 @@
             const numMimeTypes = getRandomNumber(0, commonMimeTypes.length);
             const shuffledMimeTypes = commonMimeTypes.sort(() => 0.5 - Math.random());
             const selectedMimeTypes = shuffledMimeTypes.slice(0, numMimeTypes);
-            console.log('ðŸ”— navigator.mimeTypes modificado.');
+            console.log('navigator.mimeTypes modificado.');
             return selectedMimeTypes;
         }
     });
 
     // --- Otras propiedades de Navigator ---
     Object.defineProperty(navigator, 'webdriver', { get: () => false });
-    console.log('ðŸ¤– navigator.webdriver modificado a false.');
+    console.log('navigator.webdriver modificado a false.');
 
     Object.defineProperty(navigator, 'doNotTrack', { get: () => getRandomElement(['1', '0', null]) });
-    console.log('ðŸ•µï¸â„1¤7â™€ï¸„1¤7 navigator.doNotTrack modificado.');
+    console.log('navigator.doNotTrack modificado.');
 
- 
-
-    // --- SuplantaciÃ³n de Network Information API (navigator.connection) ---
+    // --- Suplantacion de Network Information API (navigator.connection) ---
     if (navigator.connection) {
         Object.defineProperty(navigator, 'connection', {
             get: () => ({
@@ -420,18 +418,17 @@
                 saveData: getRandomElement([true, false])
             })
         });
-        console.log('ðŸ“¡ navigator.connection modificado.');
+        console.log('navigator.connection modificado.');
     }
 
-    // --- SuplantaciÃ³n de maxTouchPoints y cookieEnabled ---
+    // --- Suplantacion de maxTouchPoints y cookieEnabled ---
     Object.defineProperty(navigator, 'maxTouchPoints', { get: () => getRandomElement([0, 1, 5, 10]) });
-    console.log('ðŸ‘† maxTouchPoints modificado.');
+    console.log('maxTouchPoints modificado.');
 
     Object.defineProperty(navigator, 'cookieEnabled', { get: () => getRandomElement([true, true, true, false]) });
-    console.log('ðŸª cookieEnabled modificado.');
+    console.log('cookieEnabled modificado.');
 
-   
-         // WebGL Vendor & Renderer (ejemplos comunes)
+    // WebGL Vendor & Renderer (ejemplos comunes)
     const webglVendors = ['Google Inc.', 'Mozilla', 'Microsoft Corporation'];
     const webglRenderers = ['ANGLE (Intel(R) HD Graphics 630 Direct3D11 vs_5_0 ps_5_0)', 'llvmpipe (LLVM 15.0.7, 256 bits)', 'SwiftShader Direct3D 11'];
 
@@ -458,50 +455,39 @@
         console.log('Random WebGL Vendor:', glContext.getParameter(37445));
         console.log('Random WebGL Renderer:', glContext.getParameter(37446));
     }
-   
-   
-   /// --- DetecciÃ³n de AdBlock (condicional por URL) ---
+
+    /// --- Deteccion de AdBlock (condicional por URL) ---
     const allowedUrlsForAdBlock = [
         'https://www.youtube-nocookie.com/',
         'https://www.twitch.tv/',
         'https://gemini.google.com/',
-        'https://x.com/' 
+        'https://x.com/'
     ];
 
     // --- Palabras clave a excluir ---
-    // Si un className o ID contiene estas palabras, el script lo ignorarÃ¡,
-    // incluso si tambiÃ©n contiene "ad" o "adsbox".
+    // Si un className o ID contiene estas palabras, el script lo ignorara,
+    // incluso si tambien contiene "ad" o "adsbox".
     const excludedKeywords = [
         'loading',      // Usado para spinners, barras de carga, etc.
         'loader',       // Otra variante para elementos de carga
-        'header',       // ComÃºn en IDs/clases no relacionados con anuncios
-        'footer',       // Ãdem
-        'sidebar',      // Ãdem
-        'navbar',       // Ãdem
+        'header',       // Comun en IDs/clases no relacionados con anuncios
+        'footer',       // Idem
+        'sidebar',      // Idem
+        'navbar',       // Idem
         'main',         // Contenido principal
-        'content',      // Contenido de la pÃ¡gina
+        'content',      // Contenido de la pagina
         'overlay',      // Superposiciones (popups, pero no necesariamente anuncios)
         'modal',        // Ventanas modales
-        'dropdown',     // MenÃºs desplegables
+        'dropdown',     // Menus desplegables
         'widget',       // Widgets generales, no necesariamente anuncios
-        'slideshow',    // GalerÃ­as de imÃ¡genes
+        'slideshow',    // Galerias de imagenes
         'carousel',     // Carruseles
-        'pagination',   // PaginaciÃ³n
-        'ads-filter',   // Una clase que podrÃ­a ser para un filtro de anuncios, no el anuncio en sÃ­
+        'pagination',   // Paginacion
+        'ads-filter',   // Una clase que podria ser para un filtro de anuncios, no el anuncio en si
         'ads-container-placeholder', // Si el sitio usa placeholders, no queremos modificarlos
-        // Agrega mÃ¡s palabras clave si encuentras elementos que se estÃ¡n afectando incorrectamente.
     ];
 
-    // --- Funciones auxiliares ---
-    function getRandomNumber(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    function getRandomElement(arr) {
-        return arr[Math.floor(Math.random() * arr.length)];
-    }
-
-    // --- FunciÃ³n para verificar si un elemento debe ser excluido ---
+    // --- Funcion para verificar si un elemento debe ser excluido ---
     function shouldExcludeElement(element) {
         const className = element.className;
         const id = element.id;
@@ -511,35 +497,35 @@
             return false;
         }
 
-        // Comprobar si className o ID contienen alguna de las palabras clave de exclusiÃ³n.
+        // Comprobar si className o ID contienen alguna de las palabras clave de exclusion.
         for (const keyword of excludedKeywords) {
             if (typeof className === 'string' && className.includes(keyword)) {
-                console.log(`â„1¤7 Anti-AdBlock Bypass: Excluyendo por className "${keyword}":`, element);
+                console.log(`Anti-AdBlock Bypass: Excluyendo por className "${keyword}":`, element);
                 return true;
             }
             if (typeof id === 'string' && id.includes(keyword)) {
-                console.log(`â„1¤7 Anti-AdBlock Bypass: Excluyendo por ID "${keyword}":`, element);
+                console.log(`Anti-AdBlock Bypass: Excluyendo por ID "${keyword}":`, element);
                 return true;
             }
         }
         return false;
     }
 
-    // --- LÃ³gica principal ---
+    // --- Logica principal ---
     const isAllowedUrl = allowedUrlsForAdBlock.some(url => location.href.startsWith(url));
 
     if (isAllowedUrl) {
-        console.log('ðŸš« Anti-AdBlock Bypass: DetecciÃ³n de AdBlock permitida para esta URL. No se aplicarÃ¡ ofuscaciÃ³n.');
+        console.log('Anti-AdBlock Bypass: Deteccion de AdBlock permitida para esta URL. No se aplicara ofuscacion.');
         return;
     }
 
-    console.log('âœ„1¤7 Anti-AdBlock Bypass: Iniciando ofuscaciÃ³n para esta URL.');
+    console.log('Anti-AdBlock Bypass: Iniciando ofuscacion para esta URL.');
 
     // 1. Sobrescribir Element.prototype.appendChild
     const originalAppendChild = Element.prototype.appendChild;
     Element.prototype.appendChild = function(node) {
         if (node && node.nodeType === Node.ELEMENT_NODE) {
-            // Primero, verifica si debe ser excluido antes de aplicar cualquier lÃ³gica de anuncio
+            // Primero, verifica si debe ser excluido antes de aplicar cualquier logica de anuncio
             if (shouldExcludeElement(node)) {
                 return originalAppendChild.call(this, node); // Agrega el nodo sin modificaciones
             }
@@ -557,7 +543,7 @@
                 if (!Object.getOwnPropertyDescriptor(node, 'offsetWidth')) {
                     Object.defineProperty(node, 'offsetWidth', { get: () => getRandomNumber(1, 100), configurable: true });
                 }
-                console.log('ðŸ“ Anti-AdBlock Bypass: Modificando dimensiones de un elemento publicitario potencial.', node);
+                console.log('Anti-AdBlock Bypass: Modificando dimensiones de un elemento publicitario potencial.', node);
             }
         }
         return originalAppendChild.call(this, node);
@@ -583,7 +569,7 @@
             {
                 if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
                     if (!Object.getOwnPropertyDescriptor(style, 'display')) {
-                         Object.defineProperty(style, 'display', { value: getRandomElement(['block', 'inline-block']), configurable: true });
+                           Object.defineProperty(style, 'display', { value: getRandomElement(['block', 'inline-block']), configurable: true });
                     }
                     if (!Object.getOwnPropertyDescriptor(style, 'visibility')) {
                         Object.defineProperty(style, 'visibility', { value: 'visible', configurable: true });
@@ -591,15 +577,11 @@
                     if (!Object.getOwnPropertyDescriptor(style, 'opacity')) {
                         Object.defineProperty(style, 'opacity', { value: '1', configurable: true });
                     }
-                    console.log('ðŸ‘» Anti-AdBlock Bypass: Intentando falsear la visibilidad de un elemento publicitario.', elt);
+                    console.log('Anti-AdBlock Bypass: Intentando falsear la visibilidad de un elemento publicitario.', elt);
                 }
             }
         }
         return style;
-    };
-
-  // --- DetecciÃ³n de AdBlock    
-
-     
-    console.log('ðŸš€ Script de ofuscaciÃ³n de huella digital del navegador activo.');
+    }; 
+    console.log('todo okey.');
 })();
