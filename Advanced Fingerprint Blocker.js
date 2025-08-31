@@ -1,13 +1,12 @@
 // ==UserScript==
 // @name Advanced Fingerprint Blocker
 // @namespace J-Aca :)
-// @version 2.4
+// @version 2.5
 // @description Generates random browser fingerprint
 // @author J-Aca
 // @match *://*/*
 // @match *://*.*/*
 // @icon https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/icon/ico.png
-// @grant none
 // @run-at document-start
 // @grant GM_xmlhttpRequest
 // @grant GM_setValue
@@ -19,6 +18,7 @@
 (function() {
     'use strict';
 console.log("%c ¡Ofuscacion de huella digital activo.!", "background: #000000; color: #00FF00; padding: 15px 20px; font-size: 24px; font-weight: bold; text-align: center; border: 2px solid #00FF00;");
+
 
     // Funciones auxiliares para obtener valores aleatorios
     function getRandomElement(array) {
@@ -43,7 +43,7 @@ console.log("%c ¡Ofuscacion de huella digital activo.!", "background: #000000; 
         return result;
     }
 
-    // --- Canvas Fingerprinting (modificacion de toDataURL) ---
+ // --- Canvas Fingerprinting (modificacion de toDataURL) ---
     const originalToDataURL = HTMLCanvasElement.prototype.toDataURL;
     HTMLCanvasElement.prototype.toDataURL = function() {
         const context = this.getContext('2d');
@@ -69,8 +69,54 @@ console.log("%c ¡Ofuscacion de huella digital activo.!", "background: #000000; 
         console.log('Canvas.toDataURL modificado con ruido.');
         return result;
     };
+    //v2
+    function canv() {
+   const randomInt = () => Math.floor(Math.random() * 10) - 5;  
 
-    // --- WebGL Fingerprinting (modificacion de getParameter) ---
+    const addNoise = (imageData) => {
+        const data = imageData.data;
+        for (let i = 0; i < data.length; i += 4) {
+            data[i] = data[i] + randomInt(); 
+            data[i + 1] = data[i + 1] + randomInt();  
+            data[i + 2] = data[i + 2] + randomInt();  
+        }
+        return imageData;
+    };
+
+    // Proxy getContext to wrap context before fingerprinting begins
+    const originalGetContext = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (...args) {
+        const context = originalGetContext.apply(this, args);
+        if (args[0] === '2d' && context) { 
+            const originalGetImageData = context.getImageData;
+            context.getImageData = function (...a) {
+                const original = originalGetImageData.apply(this, a);
+                return addNoise(original);
+            };
+ 
+        }
+        return context;
+    };
+
+    // Slightly perturb canvas before toDataURL/toBlob is called
+    const patchCanvasMethod = (methodName) => {
+        const original = HTMLCanvasElement.prototype[methodName];
+        HTMLCanvasElement.prototype[methodName] = function (...args) {
+            const ctx = this.getContext('2d');
+            if (ctx) {
+                ctx.fillStyle = `rgba(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},0.01)`;
+                ctx.fillRect(0, 0, 1, 1);
+            }
+            return original.apply(this, args);
+        };
+    };
+
+    patchCanvasMethod('toDataURL');
+    patchCanvasMethod('toBlob');
+    console.log('Canvas modificado con ruido persistente.');
+};
+    canv();
+// --- WebGL Fingerprinting (modificacion de getParameter) ---
     const originalGetParameterWebGL = WebGLRenderingContext.prototype.getParameter;
     WebGLRenderingContext.prototype.getParameter = function(pname) {
         const GL_VENDOR = 0x1F00;
@@ -128,11 +174,7 @@ console.log("%c ¡Ofuscacion de huella digital activo.!", "background: #000000; 
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0.0 Safari/605.1.15",
         "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Mozilla/5.0 (Windows NT 10.0; rv:110.0) Gecko/20100101 Firefox/122.0",
-        "Mozilla/5.0 (Android 12; Mobile; rv:110.0) Gecko/110.0 Firefox/122.0", // Movil
-        "Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/90.0.4430.210 Mobile/15E148 Safari/604.1", // iPad
-        "Mozilla/5.0 (Linux; Android 12; SM-G998U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Mobile Safari/537.36", // Android
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1" // iPhone
+        "Mozilla/5.0 (Windows NT 10.0; rv:110.0) Gecko/20100101 Firefox/122.0"
     ];
     const fakePlatforms = ['Win32', 'Win64', 'MacIntel', 'Linux x86_64', 'ARM', 'iPhone', 'iPad', 'Android'];
     const fakeVendors = ['Google Inc.', 'Apple Computer, Inc.', 'Microsoft Corp.', 'Mozilla Foundation'];
@@ -182,10 +224,10 @@ console.log("%c ¡Ofuscacion de huella digital activo.!", "background: #000000; 
 
     // --- Suplantacion de Propiedades de Pantalla ---
     const screenResolutions = [
+        { width: 2560, height: 1440 },
         { width: 1920, height: 1080 },
-        { width: 1366, height: 768 },
-        { width: 1536, height: 864 },
-        { width: 1280, height: 720 }
+        { width: 1280, height: 720 },
+        { width: 3840, height: 2160 }
     ];
     const selectedResolution = getRandomElement(screenResolutions);
 
@@ -427,8 +469,7 @@ console.log("%c ¡Ofuscacion de huella digital activo.!", "background: #000000; 
 
     Object.defineProperty(navigator, 'cookieEnabled', { get: () => getRandomElement([true, true, true, false]) });
     console.log('cookieEnabled modificado.');
-
-    // WebGL Vendor & Renderer (ejemplos comunes)
+ 
     const webglVendors = ['Google Inc.', 'Mozilla', 'Microsoft Corporation'];
     const webglRenderers = ['ANGLE (Intel(R) HD Graphics 630 Direct3D11 vs_5_0 ps_5_0)', 'llvmpipe (LLVM 15.0.7, 256 bits)', 'SwiftShader Direct3D 11'];
 
@@ -438,10 +479,10 @@ console.log("%c ¡Ofuscacion de huella digital activo.!", "background: #000000; 
         if (type === 'webgl' || type === 'webgl2') {
             const originalGetParameter = context.getParameter;
             context.getParameter = function(parameter) {
-                if (parameter === 37445) { // GL_VENDOR
+                if (parameter === 37445) {  
                     return getRandomElement(webglVendors);
                 }
-                if (parameter === 37446) { // GL_RENDERER
+                if (parameter === 37446) {  
                     return getRandomElement(webglRenderers);
                 }
                 return originalGetParameter.call(this, parameter);
@@ -456,132 +497,5 @@ console.log("%c ¡Ofuscacion de huella digital activo.!", "background: #000000; 
         console.log('Random WebGL Renderer:', glContext.getParameter(37446));
     }
 
-    /// --- Deteccion de AdBlock (condicional por URL) ---
-    const allowedUrlsForAdBlock = [
-        'https://www.youtube-nocookie.com/',
-        'https://www.twitch.tv/',
-        'https://gemini.google.com/',
-        'https://x.com/'
-    ];
-
-    // --- Palabras clave a excluir ---
-    // Si un className o ID contiene estas palabras, el script lo ignorara,
-    // incluso si tambien contiene "ad" o "adsbox".
-    const excludedKeywords = [
-        'loading',      // Usado para spinners, barras de carga, etc.
-        'loader',       // Otra variante para elementos de carga
-        'header',       // Comun en IDs/clases no relacionados con anuncios
-        'footer',       // Idem
-        'sidebar',      // Idem
-        'navbar',       // Idem
-        'main',         // Contenido principal
-        'content',      // Contenido de la pagina
-        'overlay',      // Superposiciones (popups, pero no necesariamente anuncios)
-        'modal',        // Ventanas modales
-        'dropdown',     // Menus desplegables
-        'widget',       // Widgets generales, no necesariamente anuncios
-        'slideshow',    // Galerias de imagenes
-        'carousel',     // Carruseles
-        'pagination',   // Paginacion
-        'ads-filter',   // Una clase que podria ser para un filtro de anuncios, no el anuncio en si
-        'ads-container-placeholder', // Si el sitio usa placeholders, no queremos modificarlos
-    ];
-
-    // --- Funcion para verificar si un elemento debe ser excluido ---
-    function shouldExcludeElement(element) {
-        const className = element.className;
-        const id = element.id;
-
-        // Si el elemento no tiene una clase ni un ID, no puede ser excluido por palabras clave.
-        if (!className && !id) {
-            return false;
-        }
-
-        // Comprobar si className o ID contienen alguna de las palabras clave de exclusion.
-        for (const keyword of excludedKeywords) {
-            if (typeof className === 'string' && className.includes(keyword)) {
-                console.log(`Anti-AdBlock Bypass: Excluyendo por className "${keyword}":`, element);
-                return true;
-            }
-            if (typeof id === 'string' && id.includes(keyword)) {
-                console.log(`Anti-AdBlock Bypass: Excluyendo por ID "${keyword}":`, element);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // --- Logica principal ---
-    const isAllowedUrl = allowedUrlsForAdBlock.some(url => location.href.startsWith(url));
-
-    if (isAllowedUrl) {
-        console.log('Anti-AdBlock Bypass: Deteccion de AdBlock permitida para esta URL. No se aplicara ofuscacion.');
-        return;
-    }
-
-    console.log('Anti-AdBlock Bypass: Iniciando ofuscacion para esta URL.');
-
-    // 1. Sobrescribir Element.prototype.appendChild
-    const originalAppendChild = Element.prototype.appendChild;
-    Element.prototype.appendChild = function(node) {
-        if (node && node.nodeType === Node.ELEMENT_NODE) {
-            // Primero, verifica si debe ser excluido antes de aplicar cualquier logica de anuncio
-            if (shouldExcludeElement(node)) {
-                return originalAppendChild.call(this, node); // Agrega el nodo sin modificaciones
-            }
-
-            const className = node.className;
-            const id = node.id;
-
-            if ((typeof className === 'string' && className.includes('adsbox')) ||
-                (typeof id === 'string' && id.includes('ad')) ||
-                node.hasAttribute('data-ad-client'))
-            {
-                if (!Object.getOwnPropertyDescriptor(node, 'offsetHeight')) {
-                    Object.defineProperty(node, 'offsetHeight', { get: () => getRandomNumber(1, 100), configurable: true });
-                }
-                if (!Object.getOwnPropertyDescriptor(node, 'offsetWidth')) {
-                    Object.defineProperty(node, 'offsetWidth', { get: () => getRandomNumber(1, 100), configurable: true });
-                }
-                console.log('Anti-AdBlock Bypass: Modificando dimensiones de un elemento publicitario potencial.', node);
-            }
-        }
-        return originalAppendChild.call(this, node);
-    };
-
-    // 2. Sobrescribir window.getComputedStyle
-    const originalGetComputedStyle = window.getComputedStyle;
-    window.getComputedStyle = function(elt, pseudoElt) {
-        const style = originalGetComputedStyle.call(this, elt, pseudoElt);
-
-        if (elt && elt.nodeType === Node.ELEMENT_NODE) {
-            // Primero, verifica si debe ser excluido
-            if (shouldExcludeElement(elt)) {
-                return style; // Devuelve el estilo original sin modificaciones
-            }
-
-            const className = elt.className;
-            const id = elt.id;
-
-            if ((typeof className === 'string' && className.includes('adsbox')) ||
-                (typeof id === 'string' && id.includes('ad')) ||
-                elt.hasAttribute('data-ad-client'))
-            {
-                if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
-                    if (!Object.getOwnPropertyDescriptor(style, 'display')) {
-                           Object.defineProperty(style, 'display', { value: getRandomElement(['block', 'inline-block']), configurable: true });
-                    }
-                    if (!Object.getOwnPropertyDescriptor(style, 'visibility')) {
-                        Object.defineProperty(style, 'visibility', { value: 'visible', configurable: true });
-                    }
-                    if (!Object.getOwnPropertyDescriptor(style, 'opacity')) {
-                        Object.defineProperty(style, 'opacity', { value: '1', configurable: true });
-                    }
-                    console.log('Anti-AdBlock Bypass: Intentando falsear la visibilidad de un elemento publicitario.', elt);
-                }
-            }
-        }
-        return style;
-    }; 
-    console.log('todo okey.');
+    console.log('todo listo.');
 })();
