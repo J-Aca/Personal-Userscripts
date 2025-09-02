@@ -4,7 +4,6 @@
 // @version      2.0.5
 // @author       J-Aca
 // @description  Simula localStorage, sessionStorage, CacheStorage e Intl para evitar errores de seguridad en sitios
-// @icon         https://cdn-icons-png.freepik.com/512/1149/1149032.png
 // @match        *://*/*
 // @match        *://*.*/*
 // @match        *://*.*.*/*
@@ -14,13 +13,10 @@
 // @exclude      *://x.com/*
 // @grant        none
 // @run-at       document-start
-// @updateURL    http://192.168.0.157:8081/FakeAllStorage.js
-// @downloadURL  http://192.168.0.157:8081/FakeAllStorage.js
-// ==/UserScript==
-
-// @icon https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/icon/ico2.png
+// @icon         https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/icon/ico2.png
 // @updateURL    https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/FakeAllStorage.js
 // @downloadURL  https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/FakeAllStorage.js
+// ==/UserScript==
 (function () {
     'use strict';
 
@@ -107,5 +103,6 @@
     }));
 
     console.log(`%c Todos los parches aplicados: localStorage=${!!localStorage}, sessionStorage=${!!sessionStorage}, caches=${!!caches}, Intl=${!!Intl}`, "color: #fff; background: #ae3380");
+
 
 })();
