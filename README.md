@@ -1,2 +1,2 @@
-# Personal-Userscriots
+# Personal-Userscripts
 Personal-Userscripts
