@@ -1,17 +1,17 @@
 // ==UserScript==
 // @name Advanced Fingerprint Blocker
-// @namespace J-Aca :)
-// @version 2.8.0
+// @author      J-Aca
+// @namespace   J-Aca :)
+// @version     2.8.1
 // @description Generates random browser fingerprint
-// @author J-Aca
-// @match *://*/*
-// @match *://*.*/*
-// @icon https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/icon/ico.png
-// @run-at document-start
-// @grant GM_xmlhttpRequest
-// @grant GM_setValue
-// @grant GM_getValue
-// @updateURL https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/Advanced%20Fingerprint%20Blocker.js
+// @match       *://*/*
+// @match       *://*.*/*
+// @icon        https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/icon/ico.png
+// @run-at      document-start
+// @grant       GM_xmlhttpRequest
+// @grant       GM_setValue
+// @grant       GM_getValue
+// @updateURL   https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/Advanced%20Fingerprint%20Blocker.js
 // @downloadURL https://raw.githubusercontent.com/J-Aca/Personal-Userscripts/refs/heads/main/Advanced%20Fingerprint%20Blocker.js
 // ==/UserScript==
 
@@ -206,7 +206,7 @@ console.log("%c ¡Ofuscacion de huella digital activo!", "background: #000000; c
                 sessionData.appName = getRandomElement(fakeAppNames);
                 sessionData.hardwareConcurrency = getRandomNumber(2, 16);
                 sessionData.deviceMemory = getRandomNumber(2, 32);
-                sessionData.language = getRandomElement(['es-ES', 'en-US', 'fr-FR', 'de-DE']);
+sessionData.language = getRandomElement(['es-ES', 'es-MX', 'es-US', 'es-AR', 'es-CO', 'es-CL', 'es-PE', 'es-VE', 'es-PR', 'es-DO', 'es-CR', 'es-GT', 'es-SV', 'es-HN', 'es-NI', 'es-PA', 'es-CU', 'es-BO', 'es-EC', 'es-UY', 'es-PY', 'es-GQ']);
             }
 
             checkAndDefineProperty(navigator, 'userAgent', () => sessionData.userAgent);
@@ -217,7 +217,7 @@ console.log("%c ¡Ofuscacion de huella digital activo!", "background: #000000; c
             checkAndDefineProperty(navigator, 'hardwareConcurrency', () => sessionData.hardwareConcurrency);
             checkAndDefineProperty(navigator, 'deviceMemory', () => sessionData.deviceMemory);
             checkAndDefineProperty(navigator, 'language', () => sessionData.language);
-            checkAndDefineProperty(navigator, 'languages', () => [sessionData.language, getRandomElement(['en-US', 'fr-FR'])]);
+checkAndDefineProperty(navigator, 'languages', () => [sessionData.language, getRandomElement(['es-ES', 'es-MX', 'es-US', 'es-AR', 'es-CO', 'es-CL', 'es-PE', 'es-VE', 'es-PR', 'es-DO', 'es-CR', 'es-GT', 'es-SV', 'es-HN', 'es-NI', 'es-PA', 'es-CU', 'es-BO', 'es-EC', 'es-UY', 'es-PY', 'es-GQ'])]);
             checkAndDefineProperty(navigator, 'webdriver', () => false);
 
             console.log("Propiedades del navegador modificadas.");
@@ -263,7 +263,16 @@ console.log("%c ¡Ofuscacion de huella digital activo!", "background: #000000; c
         protect: function() {
             if (!SETTINGS.spoofTimezone) return;
 
-            const timezones = ['America/New_York', 'Europe/London', 'Asia/Tokyo', 'America/Los_Angeles'];
+            const timezones = [
+            'America/New_York', 'Europe/London', 'Asia/Tokyo', 'America/Los_Angeles',
+            'Europe/Paris', 'Asia/Shanghai', 'America/Denver', 'Australia/Sydney',
+            'Africa/Johannesburg', 'Pacific/Auckland', 'Europe/Berlin', 'Asia/Kolkata',
+            'America/Chicago', 'Europe/Rome', 'America/Mexico_City', 'Asia/Dubai',
+            'Europe/Moscow', 'America/Sao_Paulo', 'Canada/Eastern', 'Europe/Madrid',
+            'Asia/Singapore', 'Europe/Amsterdam', 'America/Vancouver', 'America/Bogota',
+            'Europe/Stockholm', 'Asia/Seoul', 'Australia/Melbourne', 'Africa/Cairo',
+            'Asia/Jakarta', 'Europe/Istanbul', 'America/Toronto', 'Asia/Bangkok'
+            ];
             if (!sessionData.timezone) {
                 sessionData.timezone = getRandomElement(timezones);
             }
